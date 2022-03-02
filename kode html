@@ -1,0 +1,137 @@
+1.kode untuk bisa akses video embed dari ok.u 
+
+<meta content='never' name='referrer'/>
+
+2. kode untuk full screen video embed
+
+frameborder="0" allowfullscren="0"
+
+3 kode iframe video
+
+<iframe width="640" height="360" src="https://protonvideo.to/iframe/0fa6c4416f6bf049c4531d4bb752cd70/" frameborder="0" allow="autoplay" allowfullscreen></iframe>
+
+4. membuat tab download html dan css ( css kalau internal menambahkan atribut <style type="text/css">....<style> , kalu external tidak usa.)
+
+<div class="dbox">
+      <div class="dbox-list"><strong>480p</strong> 
+           <a href="http://safelinku.net/t9UflUa">GoogleDrive</a> | Openload | 
+           <a href="http://safelinku.net/t9UflUa">Clicknupload</a>&nbsp;| 
+           <span style="color: red;">Hardsub</span>
+       </div>
+</div>
+
+ -tambahkan css 
+
+.dbox {
+margin: 0;
+padding: 0;
+list-style: none;
+}
+.dbox-list {
+background: #E4E4E4;
+margin-bottom: 2px;
+line-height: 26px;
+padding: 0 5px;
+}
+.dbox-list strong {
+background: #3498db;
+border-right: 2px solid #F5F5F5;
+width: 65px;
+display: block;
+float: left;
+margin-left: -5px;
+margin-right: 5px;
+color: #FFF;
+padding: 0 5px;
+text-align: center;
+}
+.dbox-list a {
+color: #6d6d6d;
+}
+.dbox-list a:hover {
+color: #222;
+}
+@media only screen and (max-width: 360px) {
+  .dbox-list strong {width:100%}
+  .dbox-title {text-align:center}
+}
+
+5.membuat multi tab video html dan css ( css kalau internal menambahkan atribut <style type="text/css">....<style> , kalu external tidak usa seperti contoh di bawah ini.)
+
+<div id='multitab-video'>
+  <div id="movie-player">
+    <video style='position: absolute; height: 100%; width:100%' src="video/trailer.mp4" type="video/mp4" controls></video>
+     </div>
+  <div id="server-list">
+      <div class="server-item" title="LINK DOWNLOAD">
+          <a href="EMBED URL VIDEO" target="search_iframe">SD 360p</a>
+          <a href="EMBED URL VIDEO" target="search_iframe">SD 480p</a>
+          <a href="EMBED URL VIDEO" target="search_iframe">HD 720p</a>
+          <a href="EMBED URL VIDEO" target="search_iframe">HD 1080p</a>
+      </div>
+      
+  </div>
+</div>
+
+-tambahkan css
+<style type="text/css">
+  /*CSS Multi Tab Video by Blog Mas Tamvan*/
+  #multitab-video{
+    position:relative;
+    box-sizing:border-box;
+    margin:0 auto;
+    line-height:2em;
+    font-size:15px!important;
+    width:100%;
+    height: 50%;
+  }
+
+  #multitab-video #movie-player{
+    position:relative;
+    padding-bottom:56.25%;
+    padding-top:1.66666666666667em;
+    height:0}
+  #multitab-video #movie-player iframe{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%}
+  #multitab-video #server-list{
+    position:relative;
+    background:#fafafa;
+    display:block}
+  #multitab-video #server-list .server-item:before{
+    content:attr(title);
+    width:9.93333333333333em;
+    display:inline-block;
+    padding-left:0.933333333333333em}
+  .server-item{border-bottom:1px solid #c8c8cb}
+  #multitab-video #server-list a{
+    color:#334;text-decoration:none;
+    border:1px solid #443;
+    padding:0.333333333333333em 0.666666666666667em;
+    display:inline-block;margin:0.333333333333333em;
+    box-sizing:border-box}
+  a:active{
+    background-color:yellow}
+  </style>
+
+6.menambahkan sebuah file yeng berbeda folder
+jika file/foto/video berada dalam folder yang sama maka tingal memasukkan nama folder dan filenya contoh( video/trailer.mp4)
+namun jika file/foto/video yang akan kita panggil berada di folder yang berbeda maka tambahkan perintah ../ untuk melankah keluar dari folder,
+dan tinggal menambahkan perintah tersebut jika ingin meangkah lebih jauh dari folder. contoh(../video1/trailer1.mp4  atau ../../video2/trailer2.mp4)
+../ (satu langkah/folder)
+../../ (dua lankah/folder)
+
+7.mengatasi limit upload wordpress.
+(1. tambahkan script  
+php_value upload_max_filesize 128M
+php_value post_max_size 128M
+php_value max_execution_time 300
+php_value max_input_time 300
+
+tempatkan script tersebut dalam file" .htacces "  posisikan sesudah </IFmodule>( ...) sebelum # END wordpress
+
+8. Menambahkan foto dengan iframe
+<img src="http://res.cloudinary.com/demo/image/youtube/w_795,h_440,c_fill/Video_Id.jpg" height="0" with="0"/> 
