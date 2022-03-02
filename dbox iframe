@@ -1,0 +1,31 @@
+
+<div class="outer" ng-app="tabs">
+  <div class="tabs" ng-controller="shift_tabs as shift">
+    <div class="tab-buttons" ng-init="shift.makeShift(1)">
+      <button ng-class="{active:shift.isActive(1)}" ng-click="shift.makeShift(1)">480p</button>
+      <button ng-class="{active:shift.isActive(2)}" ng-click="shift.makeShift(2)">HD 720p</button>
+      <button ng-class="{active:shift.isActive(3)}" ng-click="shift.makeShift(3)">FHD 1080p</button>
+    </div>
+    <div class="tab-content">
+      <div ng-show="shift.isActive(1)"><iframe width="640" height="360" src="//ok.ru/videoembed/3416528718361?autoplay=1" frameborder="0" allow="autoplay" allowfullscreen></iframe></div>
+      <div ng-show="shift.isActive(2)"><iframe width="640" height="360" src="//ok.ru/videoembed/3416528718361?autoplay=1" frameborder="0" allow="autoplay" allowfullscreen></iframe></div>
+      <div ng-show="shift.isActive(3)"><iframe width="640" height="360" src="//ok.ru/videoembed/3416528718361?autoplay=1" frameborder="0" allow="autoplay" allowfullscreen></iframe></div>
+<div ng-show="shift.isActive(3)"><br /></div><div ng-show="shift.isActive(3)"><br /></div><div ng-show="shift.isActive(3)"><br /></div>
+    </div>
+  </div>
+</div>
+<div class="share-post">
+                <div style="text-align: center;">DOWNLOAD LINK</div>
+            </div>
+<div class="dbox">
+  <div class="dbox-list"><strong>480</strong>
+    <a href="#">GoogleDrive</a> | Openload | 
+    <a href="#">Clicknupload</a>&nbsp;| 
+    <span style="color: red;">Hardsub</span>
+  </div>
+  <div class="dbox-list"><strong>720</strong>
+    <a href="#">GoogleDrive</a> | Openload | 
+    <a href="#">Clicknupload</a>&nbsp;| 
+    <span style="color: red;">Hardsub</span>
+  </div>
+</div>
