@@ -1,0 +1,72 @@
+body {
+    font-family: helvetica neue,Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+  }
+  .serial-wrapper {
+    padding: 30px;
+    background-color: #333;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.serial-wrapper .episode-list {
+    max-height: 130px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+  }
+
+.serial-wrapper .season-list h4 {
+    margin: 0;
+    padding: 0;
+    font-size: 120%;
+    color: #fff;
+}
+}
+.serial-wrapper .episode-list {
+  max-height: 130px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+.btn {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    border: 1px solid transparent;
+      border-top-color: transparent;
+      border-right-color: transparent;
+      border-bottom-color: transparent;
+      border-left-color: transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 3px;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  .btn-primary {
+    color: #fff;
+    background-color: #e50a4a;
+    border-color: #cd0942;
+  }
+  .btn, .btn-danger.active, .btn-danger:active, .btn-default.active, .btn-default:active, .btn-info.active, .btn-info:active, .btn-primary.active, .btn-primary:active, .btn-success.active, .btn-success:active, .btn-warning.active, .btn-warning:active, .btn.active, .btn:active, .dropdown-menu > .disabled > a:focus, .dropdown-menu > .disabled > a:hover, .form-control, .navbar-toggle, .open > .dropdown-toggle.btn-danger, .open > .dropdown-toggle.btn-default, .open > .dropdown-toggle.btn-info, .open > .dropdown-toggle.btn-primary, .open > .dropdown-toggle.btn-success, .open > .dropdown-toggle.btn-warning {
+    background-image: none;
+  }
+
+  a {
+    color: #e50a4a;
+    text-decoration: none;}
+
+    *, ::after, ::before {
+        box-sizing: border-box
