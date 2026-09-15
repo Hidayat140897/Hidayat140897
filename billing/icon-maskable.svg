@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <title>Nota &amp; Faktur</title>
+  <rect width="512" height="512" fill="#0f6e5c"/>
+  <g transform="translate(256.0 256.0) scale(0.8) translate(-256.0 -256.0)">
+    <path d="M136 108 H376 V356 L361 384 L346 356 L331 384 L316 356 L301 384 L286 356 L271 384 L256 356 L241 384 L226 356 L211 384 L196 356 L181 384 L166 356 L151 384 L136 356 Z" fill="#ffffff"/>
+    <rect x="168" y="152" width="176" height="14" rx="7" fill="#cfd8d3"/><rect x="168" y="190" width="128" height="14" rx="7" fill="#cfd8d3"/>
+    <path d="M168 232 H344" stroke="#cfd8d3" stroke-width="10" stroke-linecap="round"
+          stroke-dasharray="18 16"/>
+    <rect x="168" y="266" width="176" height="26" rx="13" fill="#0f6e5c"/>
+    <rect x="168" y="312" width="96" height="14" rx="7" fill="#cfd8d3"/>
+  </g>
+</svg>

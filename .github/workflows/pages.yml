@@ -1,0 +1,50 @@
+# Menerbitkan aplikasi billing di folder billing/ ke GitHub Pages.
+#
+# Sekali saja sebelum dipakai: buka Settings -> Pages pada repositori ini,
+# lalu setel "Source" menjadi "GitHub Actions".
+#
+# Aplikasi akan terbit di https://<pengguna>.github.io/
+# Ingin di https://<pengguna>.github.io/billing/ ? Ganti "path: billing"
+# di bawah menjadi "path: ." — semua tautan di dalam aplikasi sudah relatif,
+# jadi keduanya sama-sama jalan.
+
+name: Terbitkan aplikasi billing
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'billing/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  terbitkan:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.pasang.outputs.page_url }}
+    steps:
+      - name: Ambil kode
+        uses: actions/checkout@v4
+
+      - name: Siapkan Pages
+        uses: actions/configure-pages@v5
+
+      - name: Kemas folder billing
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: billing
+
+      - name: Pasang ke Pages
+        id: pasang
+        uses: actions/deploy-pages@v4

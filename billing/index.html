@@ -4,6 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nota &amp; Faktur</title>
+<meta name="description" content="Aplikasi billing pembayaran: faktur A4, nota 80 mm, dan bukti bayar produk digital.">
+<meta name="theme-color" content="#0f6e5c" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#12181a" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Nota &amp; Faktur">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
@@ -124,7 +134,14 @@ p{margin:0}
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
 }
 
-.app{max-width:1280px;margin-inline:auto;padding-inline:20px;padding-block:0 56px}
+.app{
+  max-width:1280px;margin-inline:auto;
+  padding-inline:max(20px,env(safe-area-inset-left),env(safe-area-inset-right));
+  padding-block:0 calc(56px + env(safe-area-inset-bottom));
+}
+@media (display-mode:standalone){
+  .topbar{padding-top:calc(20px + env(safe-area-inset-top))}
+}
 
 /* ---------- topbar ---------- */
 .topbar{
@@ -580,6 +597,7 @@ table.list .nm{font-weight:500}
       <button type="button" id="tab-riwayat" role="tab" aria-selected="false" aria-controls="view-riwayat" data-view="riwayat">Riwayat</button>
       <button type="button" id="tab-toko" role="tab" aria-selected="false" aria-controls="view-toko" data-view="toko">Pengaturan</button>
     </nav>
+    <button type="button" class="btn btn-sm btn-primary" id="btnPasang" hidden>Pasang aplikasi</button>
     <p class="sync" id="syncBadge" data-state="local"><span class="dot"></span><span id="syncText">Tersimpan di perangkat ini</span></p>
   </header>
 
@@ -1951,8 +1969,52 @@ table.list .nm{font-weight:500}
     });
   }
 
+  /* ---------------- pasang sebagai aplikasi ---------------- */
+  function siapkanAplikasi(){
+    var tunda = null, tombol = $("btnPasang");
+
+    window.addEventListener("beforeinstallprompt", function(ev){
+      ev.preventDefault();
+      tunda = ev;
+      tombol.hidden = false;
+    });
+    tombol.addEventListener("click", function(){
+      if(!tunda) return;
+      var ev = tunda;
+      tunda = null;
+      tombol.hidden = true;          /* satu tawaran sekali; peramban menawarkan lagi nanti */
+      ev.prompt();
+      ev.userChoice.catch(function(){});
+    });
+    window.addEventListener("appinstalled", function(){
+      tunda = null;
+      tombol.hidden = true;
+      toast("Aplikasi terpasang di perangkat ini.");
+    });
+
+    /* Service worker hanya hidup di http(s); dari berkas lokal atau bingkai
+       tersandbox pendaftaran ditolak dan aplikasi tetap jalan tanpa mode luring. */
+    if(!("serviceWorker" in navigator)) return;
+    if(location.protocol !== "http:" && location.protocol !== "https:") return;
+    navigator.serviceWorker.register("sw.js").then(function(reg){
+      reg.addEventListener("updatefound", function(){
+        var baru = reg.installing;
+        if(!baru) return;
+        baru.addEventListener("statechange", function(){
+          if(baru.state === "installed" && navigator.serviceWorker.controller){
+            toast("Versi baru tersedia — muat ulang halaman.");
+          }
+        });
+      });
+    }).catch(function(){});
+  }
+
   /* ---------------- mulai ---------------- */
   function mulai(){
+    var q = null;
+    try { q = new URLSearchParams(location.search); } catch(e){ q = null; }
+    var mintaBaru = !!(q && q.get("aksi") === "baru");
+
     var simpanan = bacaLokal();
     if(simpanan){
       if(simpanan.toko) state.toko = Object.assign({}, TOKO_DEFAULT, simpanan.toko);
@@ -1963,7 +2025,7 @@ table.list .nm{font-weight:500}
     state.draft = trxBaru();
     state.draft.nomor = nomorBerikut();
 
-    if(!state.riwayat.length){
+    if(!state.riwayat.length && !mintaBaru){
       /* Isian contoh supaya tampilan dokumen langsung terbaca; ditandai di layar. */
       state.draft.pelanggan = "Toko Bangun Jaya";
       state.draft.telp = "0813 2255 7180";
@@ -2003,7 +2065,9 @@ table.list .nm{font-weight:500}
     $("sheetNota").hidden = false;
     $("sheetBukti").hidden = false;
     pilihDok("invoice");
+    if(q && q.get("tab") === "riwayat") pilihTab("riwayat");
     tandaiSync("local", "Tersimpan di perangkat ini");
+    siapkanAplikasi();
     sambungkan();
   }
 

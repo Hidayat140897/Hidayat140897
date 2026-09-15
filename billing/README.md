@@ -5,7 +5,20 @@ lalu cetak **faktur A4**, **nota 80 mm**, atau **bukti bayar** produk digital
 dari data yang sama.
 
 Buka `billing/index.html` langsung di browser — tidak perlu server, database,
-atau proses build.
+atau proses build. Bisa juga dipasang sebagai aplikasi dan diterbitkan ke
+GitHub Pages; keduanya dijelaskan di bawah.
+
+## Struktur berkas
+
+```
+billing/
+  index.html              aplikasi lengkap dalam satu berkas
+  manifest.webmanifest    identitas aplikasi saat dipasang
+  sw.js                   service worker, penyedia mode luring
+  icon.svg, icon-*.png    ikon aplikasi dan layar utama
+.github/workflows/
+  pages.yml               penerbitan otomatis ke GitHub Pages
+```
 
 ## Isi
 
@@ -80,6 +93,52 @@ lunas; `Pending` dan `Gagal` tidak dihitung sebagai uang masuk maupun piutang.
 
 Identitas di kepala bukti bayar diambil dari **Pengaturan** — nama usaha, ID
 outlet, dan tagline — bukan merek aplikasi penyedia mana pun.
+
+## Pasang sebagai aplikasi
+
+Aplikasi ini sebuah PWA: begitu dibuka lewat alamat `https://`, ia bisa dipasang
+dan dijalankan seperti aplikasi biasa — ada ikonnya di layar utama, terbuka
+tanpa bilah alamat, dan tetap jalan tanpa internet.
+
+| Perangkat | Caranya |
+| --- | --- |
+| Android (Chrome, Edge) | Tombol **Pasang aplikasi** muncul di kanan atas, atau menu ⋮ → *Tambahkan ke layar utama* |
+| iPhone / iPad (Safari) | Tombol bagikan → *Add to Home Screen* |
+| Windows / macOS (Chrome, Edge) | Ikon pasang di ujung kanan bilah alamat |
+
+Setelah terpasang, seluruh aplikasi disimpan di perangkat oleh `sw.js`, jadi
+transaksi tetap bisa dibuat dan nota tetap bisa dicetak saat sinyal hilang —
+berguna di konter yang internetnya putus-nyambung. Menu tekan-lama pada ikon
+menyediakan pintasan **Transaksi baru** dan **Riwayat**.
+
+Setiap kali `index.html` diubah, naikkan `VERSI` di `sw.js` agar perangkat yang
+sudah memasang menarik versi baru. Aplikasi akan memberi tahu lewat pesan
+"Versi baru tersedia — muat ulang halaman."
+
+Ini aplikasi web, bukan berkas APK di Play Store. Kalau memang perlu APK,
+PWA ini sudah memenuhi syarat untuk dibungkus jadi TWA lewat PWABuilder tanpa
+perubahan kode.
+
+## Hosting
+
+Berkas `.github/workflows/pages.yml` menerbitkan folder `billing/` ke GitHub
+Pages setiap kali ada perubahan yang masuk ke `main`.
+
+Sekali saja sebelum dipakai: buka **Settings → Pages** pada repositori ini, lalu
+setel **Source** menjadi **GitHub Actions**. Sesudah itu setiap push ke `main`
+yang menyentuh `billing/` akan menerbitkan ulang dengan sendirinya, dan alamatnya
+muncul di ringkasan Actions.
+
+Aplikasi terbit di `https://<pengguna>.github.io/`. Ingin di
+`https://<pengguna>.github.io/billing/`? Ganti `path: billing` menjadi `path: .`
+pada workflow — semua tautan di dalam aplikasi sudah relatif, jadi keduanya
+sama-sama jalan.
+
+Hosting lain juga bisa: unggah isi folder `billing/` ke Netlify, Vercel, Cloudflare
+Pages, atau hosting cPanel biasa. Tidak ada proses build dan tidak ada backend.
+Syaratnya satu saja, `https://` — service worker dan pemasangan aplikasi tidak
+aktif di `http://` biasa maupun saat berkas dibuka langsung dari `file://`
+(aplikasinya tetap jalan, hanya mode luring dan tombol pasangnya yang mati).
 
 ## Perhitungan
 
