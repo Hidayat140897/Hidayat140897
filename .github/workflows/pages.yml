@@ -1,7 +1,9 @@
 # Menerbitkan aplikasi billing di folder billing/ ke GitHub Pages.
 #
-# Sekali saja sebelum dipakai: buka Settings -> Pages pada repositori ini,
-# lalu setel "Source" menjadi "GitHub Actions".
+# Langkah "enablement: true" di bawah menyalakan GitHub Pages sendiri pada
+# jalannya yang pertama, jadi tidak perlu diatur lebih dulu lewat Settings.
+# Bila karena suatu hal gagal, nyalakan manual: Settings -> Pages ->
+# Source: "GitHub Actions".
 #
 # Aplikasi akan terbit di https://hidayat140897.github.io/Hidayat140897/
 # Alamat akar https://hidayat140897.github.io/ hanya dilayani oleh repositori
@@ -45,6 +47,8 @@ jobs:
 
       - name: Siapkan Pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: Kemas folder billing
         uses: actions/upload-pages-artifact@v3
