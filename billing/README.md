@@ -71,6 +71,13 @@ ukuran apa pun — Nota kontan paling enak dibaca di A5 atau A4, sedangkan Struk
 termal dirancang untuk 58 mm dan 80 mm. Pilihan terakhir ikut tersimpan bersama
 pengaturan usaha, jadi tidak perlu diatur ulang tiap transaksi.
 
+**Untuk disimpan sebagai PDF, pilih A5 atau A4.** Pada kedua ukuran itu dokumen
+mengisi kertas sepenuhnya: hurufnya membesar, lebarnya memenuhi area cetak,
+penutupnya terdorong ke dasar halaman, dan bukti bayar mendapat kolom tanda
+tangan Petugas dan Penerima. Memilih 58 mm atau 80 mm lalu menyimpannya ke PDF
+menghasilkan pita sempit di tengah kertas kosong, karena ukuran itu memang
+ditujukan untuk gulungan termal.
+
 ## Bukti bayar produk digital
 
 Pilih dokumen **Bukti bayar** dan form berganti ke data satu transaksi digital —
@@ -90,6 +97,18 @@ dokumen; modal dan margin tinggal di aplikasi.
 Order ID terisi otomatis berpola `TRX` + stempel waktu + 4 angka acak, dan tetap
 bisa ditimpa dengan nomor asli dari provider. Status `Sukses` menandai transaksi
 lunas; `Pending` dan `Gagal` tidak dihitung sebagai uang masuk maupun piutang.
+
+Tiga keterangan pelanggan berdiri sendiri dan tidak pernah saling menggantikan:
+
+| Baris | Isinya | Diambil dari |
+| --- | --- | --- |
+| Nama Pelanggan | Nama orang yang membayar | Bagian **Pelanggan** |
+| No. Pelanggan | ID layanan — ID meter, ID akun, nomor tujuan | Bagian **Data transaksi digital** |
+| No. Telepon | Nomor kontak pelanggan | Bagian **Pelanggan** |
+
+Baris yang dikosongkan tidak ikut tercetak. Nama pelanggan dan nomor telepon
+hanya muncul bila memang diisi, sedangkan No. Pelanggan selalu tampil karena
+merupakan inti bukti transaksi.
 
 Identitas di kepala bukti bayar diambil dari **Pengaturan** — nama usaha, ID
 outlet, dan tagline — bukan merek aplikasi penyedia mana pun.

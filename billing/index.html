@@ -489,6 +489,30 @@ table.nk tfoot tr:last-child td{font-weight:700;font-size:12px}
 .nm-total .big{font-size:16px;font-weight:700;padding-top:8px;margin-top:5px;
   border-top:1px solid var(--paper-accent);color:var(--paper-accent)}
 
+/* bukti bayar & nota di kertas lembaran: isi penuh, huruf ikut membesar */
+.sheet-bukti.k-a5{font-size:13.5px;padding:34px 32px 30px}
+.sheet-bukti.k-a4{font-size:15px;padding:44px 42px 38px}
+.sheet-bukti.k-sheet .bukti-brand{margin-bottom:28px}
+.sheet-bukti.k-a5 .bukti-brand b{font-size:32px}
+.sheet-bukti.k-a4 .bukti-brand b{font-size:38px}
+.sheet-bukti.k-sheet .bukti-brand span{font-size:16px}
+.sheet-bukti.k-sheet .bukti-row{padding:9px 0;border-bottom:1px solid var(--paper-line)}
+.sheet-bukti.k-sheet .bukti-row:last-child{border-bottom:0}
+.sheet-bukti.k-sheet .bukti-rule{margin:20px 0 16px}
+.sheet-bukti.k-a5 .bukti-total{font-size:19px}
+.sheet-bukti.k-a4 .bukti-total{font-size:22px}
+.sheet-bukti.k-sheet .bukti-foot{margin-top:24px;padding-top:16px;font-size:12px}
+.sheet-bukti.k-sheet{display:flex;flex-direction:column}
+.bukti-ttd{display:none}
+.sheet-bukti.k-sheet .bukti-ttd{
+  display:flex;justify-content:space-between;gap:34px;margin-top:auto;
+  padding-top:30px;text-align:center;
+}
+.bukti-ttd > div{flex:1;min-width:0}
+.bukti-ttd span{font-size:11px;color:var(--paper-ink-2)}
+.bukti-ttd .ln{border-bottom:1px solid var(--paper-ink);margin:50px 12px 5px;height:0}
+.bukti-ttd b{font-weight:500;font-size:12px;overflow-wrap:anywhere}
+
 /* bukti bayar (produk digital) */
 .sheet-bukti{
   width:348px;max-width:100%;padding:26px 24px 22px;border-radius:12px;
@@ -577,6 +601,14 @@ table.list .nm{font-weight:500}
   body.cetak-bukti .sheet-bukti{display:block!important;margin:0 auto;border-radius:0}
   .sheet-nota::after{display:none}
   .sheet-nota.m-klasik{border-color:#000}
+  /* Kertas lembaran (A5/A4, termasuk Save as PDF): dokumen mengisi halaman
+     penuh, dengan penutup terdorong ke bawah alih-alih menggantung di atas. */
+  body.cetak-nota .sheet-nota.k-sheet,
+  body.cetak-bukti .sheet-bukti.k-sheet{
+    width:100%!important;min-height:calc(100vh - 2px);
+    display:flex;flex-direction:column;
+  }
+  body.cetak-nota .sheet-nota.k-sheet .nota-foot{margin-top:auto}
   .inv-table tr,.nota-item{break-inside:avoid}
 }
 </style>
@@ -707,8 +739,8 @@ table.list .nm{font-weight:500}
           </div>
           <div class="grid g2" style="margin-top:12px">
             <div class="field">
-              <label for="dPelangganNo">No. pelanggan</label>
-              <input id="dPelangganNo" type="text" placeholder="Nomor HP, ID meter, atau ID akun" autocomplete="off">
+              <label for="dPelangganNo">No. pelanggan / ID layanan</label>
+              <input id="dPelangganNo" type="text" placeholder="ID meter, ID akun, atau nomor tujuan" autocomplete="off">
             </div>
             <div class="field">
               <label for="dSerial">Serial number</label>
@@ -1362,8 +1394,8 @@ table.list .nm{font-weight:500}
   var UKURAN = {
     "58": { lebar:222, cetak:"size:58mm auto;margin:3mm", cetakLebar:"52mm", roll:true },
     "80": { lebar:302, cetak:"size:80mm auto;margin:4mm", cetakLebar:"72mm", roll:true },
-    "a5": { lebar:430, cetak:"size:A5;margin:10mm",      cetakLebar:"auto", roll:false },
-    "a4": { lebar:580, cetak:"size:A4;margin:14mm",      cetakLebar:"auto", roll:false }
+    "a5": { lebar:430, cetak:"size:A5;margin:10mm",      cetakLebar:"100%", roll:false },
+    "a4": { lebar:580, cetak:"size:A4;margin:14mm",      cetakLebar:"100%", roll:false }
   };
   var MODEL = ["termal","ringkas","klasik","modern"];
 
@@ -1526,13 +1558,14 @@ table.list .nm{font-weight:500}
     var kode = UKURAN[state.toko.notaUkuran] ? state.toko.notaUkuran : "80";
     var u = UKURAN[kode];
     var m = MODEL.indexOf(state.toko.notaModel) >= 0 ? state.toko.notaModel : "termal";
-    var sn = $("sheetNota");
+    var sn = $("sheetNota"), sb = $("sheetBukti");
     MODEL.forEach(function(x){ sn.classList.toggle("m-" + x, x === m); });
-    Object.keys(UKURAN).forEach(function(x){ sn.classList.toggle("k-" + x, x === kode); });
-    sn.classList.toggle("k-roll", u.roll);
-    sn.classList.toggle("k-sheet", !u.roll);
-    sn.style.width = u.lebar + "px";
-    $("sheetBukti").style.width = Math.min(u.lebar, 430) + "px";
+    [sn, sb].forEach(function(el){
+      Object.keys(UKURAN).forEach(function(x){ el.classList.toggle("k-" + x, x === kode); });
+      el.classList.toggle("k-roll", u.roll);
+      el.classList.toggle("k-sheet", !u.roll);
+      el.style.width = u.lebar + "px";
+    });
     if($("selModel").value !== m) $("selModel").value = m;
     if($("selUkuran").value !== kode) $("selUkuran").value = kode;
   }
@@ -1541,10 +1574,19 @@ table.list .nm{font-weight:500}
   function barisBukti(label, nilai){
     return "<div class='bukti-row'><dt>" + esc(label) + "</dt><dd>" + esc(nilai || "-") + "</dd></div>";
   }
+  /* Baris yang hanya dicetak bila memang diisi, supaya tidak ada "-" percuma. */
+  function barisBuktiOpsional(label, nilai){
+    return String(nilai || "").trim() ? barisBukti(label, nilai) : "";
+  }
   function gambarBukti(t){
     var k = state.toko, g = t.digital || {}, c = hitung(t);
     var total = t.mode === "digital" ? angka(g.hargaAkhir) : c.total;
     var outlet = (k.outletId ? k.outletId + " / " : "") + k.nama;
+    /* Di kertas lembaran tersedia ruang untuk kolom tanda tangan. */
+    var ttd = "<div class='bukti-ttd'>" +
+      "<div><span>Petugas</span><div class='ln'></div><b>" + esc(t.kasir || k.nama) + "</b></div>" +
+      "<div><span>Penerima</span><div class='ln'></div><b>" + esc(t.pelanggan || "Pelanggan") + "</b></div>" +
+    "</div>";
 
     return "" +
     "<div class='bukti-brand'><b>" + esc(k.nama) + "</b>" +
@@ -1553,7 +1595,9 @@ table.list .nm{font-weight:500}
       barisBukti("Tanggal / Waktu", tglBukti(t.tanggal) + " / " + (t.waktu || "-")) +
       barisBukti("ID Outlet / Nama Outlet", outlet) +
       barisBukti("Order ID", g.orderId) +
-      barisBukti("No. Pelanggan", g.pelangganNo || t.telp) +
+      barisBuktiOpsional("Nama Pelanggan", t.pelanggan) +
+      barisBukti("No. Pelanggan", g.pelangganNo) +
+      barisBuktiOpsional("No. Telepon", t.telp) +
       barisBukti("Serial Number", g.serial) +
       barisBukti("Jenis Transaksi", g.jenis) +
       barisBukti("Nama Paket", g.paket) +
@@ -1561,6 +1605,7 @@ table.list .nm{font-weight:500}
     "</dl>" +
     "<div class='bukti-rule'></div>" +
     "<div class='bukti-total'><span>Total Bayar</span><span>" + rp(total) + "</span></div>" +
+    ttd +
     "<div class='bukti-foot'>" +
       (t.kasir ? "Dilayani oleh " + esc(t.kasir) + "\n" : "") +
       "Simpan bukti ini sebagai tanda pembayaran yang sah.\nDicetak " + jamCetak() +
