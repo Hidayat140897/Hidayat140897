@@ -124,18 +124,18 @@ perubahan kode.
 Berkas `.github/workflows/pages.yml` menerbitkan folder `billing/` ke GitHub
 Pages setiap kali ada perubahan yang masuk ke `main`.
 
-Workflow menyalakan Pages sendiri pada jalannya yang pertama, jadi tidak ada
-yang perlu disiapkan lebih dulu — cukup merge ke `main`. Sesudah itu setiap push
-ke `main` yang menyentuh `billing/` menerbitkan ulang dengan sendirinya, dan
-alamatnya muncul di ringkasan Actions.
+Sekali saja sebelum jalan pertama: buka **Settings → Pages**, lalu setel
+**Source** menjadi **GitHub Actions**. Langkah ini harus lewat peramban dan
+tidak bisa diotomatiskan — token bawaan GitHub Actions tidak berwenang membuat
+situs Pages, jadi workflow yang mencoba menyalakannya sendiri akan berhenti di
+`Resource not accessible by integration`.
 
-Perlu diingat, GitHub hanya menampilkan tombol **Run workflow** untuk workflow
-yang sudah ada di branch utama. Selama branch pengembangan belum di-merge,
-workflow ini belum bisa dijalankan manual dan alamat Pages masih menjawab 404 —
-itu wajar, bukan tanda ada yang salah.
+Sesudah Pages menyala, setiap push ke `main` yang menyentuh `billing/`
+menerbitkan ulang dengan sendirinya, dan alamatnya muncul di ringkasan Actions.
 
-Bila penyalaan otomatisnya gagal, nyalakan manual lewat **Settings → Pages** →
-**Source: GitHub Actions**, lalu jalankan ulang workflow-nya.
+Dua keadaan yang wajar dan bukan tanda kerusakan: alamat Pages menjawab 404
+selama situsnya belum pernah terbit, dan tombol **Run workflow** belum muncul
+selama workflow-nya belum ada di branch utama.
 
 Aplikasi terbit di `https://hidayat140897.github.io/Hidayat140897/`.
 
