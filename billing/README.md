@@ -129,10 +129,20 @@ setel **Source** menjadi **GitHub Actions**. Sesudah itu setiap push ke `main`
 yang menyentuh `billing/` akan menerbitkan ulang dengan sendirinya, dan alamatnya
 muncul di ringkasan Actions.
 
-Aplikasi terbit di `https://<pengguna>.github.io/`. Ingin di
-`https://<pengguna>.github.io/billing/`? Ganti `path: billing` menjadi `path: .`
-pada workflow — semua tautan di dalam aplikasi sudah relatif, jadi keduanya
-sama-sama jalan.
+Aplikasi terbit di `https://hidayat140897.github.io/Hidayat140897/`.
+
+Repositori ini bernama sama dengan pemiliknya, tetapi itu tidak menjadikannya
+situs utama: alamat akar `https://hidayat140897.github.io/` hanya dilayani oleh
+repositori yang namanya persis `hidayat140897.github.io`, dan repositori seperti
+itu belum ada. Setiap repositori lain mendapat alamatnya sendiri di bawah
+`/nama-repo/`, jadi menyalakan Pages di sini tidak menyentuh repositori mana pun
+yang lain.
+
+Baris `path: billing` membuat isi folder `billing/` menjadi akar situs, sehingga
+berkas lain di repositori ini tidak ikut diterbitkan. Menggantinya dengan
+`path: .` akan menerbitkan seluruh isi repositori dan memindahkan aplikasi ke
+`.../Hidayat140897/billing/`. Semua tautan di dalam aplikasi relatif, jadi kedua
+susunan sama-sama jalan — begitu pula bila folder ini dipindah ke hosting lain.
 
 Hosting lain juga bisa: unggah isi folder `billing/` ke Netlify, Vercel, Cloudflare
 Pages, atau hosting cPanel biasa. Tidak ada proses build dan tidak ada backend.
