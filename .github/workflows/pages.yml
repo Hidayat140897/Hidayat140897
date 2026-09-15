@@ -1,0 +1,60 @@
+# Menerbitkan aplikasi billing di folder billing/ ke GitHub Pages.
+#
+# Langkah "enablement: true" di bawah menyalakan GitHub Pages sendiri pada
+# jalannya yang pertama, jadi tidak perlu diatur lebih dulu lewat Settings.
+# Bila karena suatu hal gagal, nyalakan manual: Settings -> Pages ->
+# Source: "GitHub Actions".
+#
+# Aplikasi akan terbit di https://hidayat140897.github.io/Hidayat140897/
+# Alamat akar https://hidayat140897.github.io/ hanya dilayani oleh repositori
+# yang namanya persis "hidayat140897.github.io" — repositori ini bukan itu,
+# meski namanya sama dengan nama pemiliknya.
+#
+# "path: billing" membuat isi folder billing/ menjadi akar situs, sehingga
+# berkas lain di repositori ini tidak ikut terbit. Menggantinya dengan
+# "path: ." akan menerbitkan seluruh isi repositori dan memindahkan aplikasi
+# ke .../Hidayat140897/billing/ — semua tautan di dalam aplikasi sudah
+# relatif, jadi keduanya sama-sama jalan.
+
+name: Terbitkan aplikasi billing
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'billing/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  terbitkan:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.pasang.outputs.page_url }}
+    steps:
+      - name: Ambil kode
+        uses: actions/checkout@v4
+
+      - name: Siapkan Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Kemas folder billing
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: billing
+
+      - name: Pasang ke Pages
+        id: pasang
+        uses: actions/deploy-pages@v4
