@@ -34,6 +34,7 @@
   --paper-ink-2:#5e615a;
   --paper-line:#d9dad2;
   --paper-accent:#0f6e5c;
+  --paper-accent-soft:rgba(15,110,92,.10);
   --focus:#0f6e5c;
   --shadow-sm:0 1px 2px rgba(22,38,42,.07);
   --shadow-md:0 1px 2px rgba(22,38,42,.06),0 10px 24px -14px rgba(22,38,42,.35);
@@ -66,6 +67,7 @@
     --paper-ink-2:#5e615a;
     --paper-line:#d3d4cb;
     --paper-accent:#0f6e5c;
+    --paper-accent-soft:rgba(15,110,92,.10);
     --focus:#45b394;
     --shadow-sm:0 1px 2px rgba(0,0,0,.3);
     --shadow-md:0 1px 2px rgba(0,0,0,.3),0 10px 24px -14px rgba(0,0,0,.8);
@@ -94,6 +96,7 @@
   --paper-ink-2:#5e615a;
   --paper-line:#d3d4cb;
   --paper-accent:#0f6e5c;
+  --paper-accent-soft:rgba(15,110,92,.10);
   --focus:#45b394;
   --shadow-sm:0 1px 2px rgba(0,0,0,.3);
   --shadow-md:0 1px 2px rgba(0,0,0,.3),0 10px 24px -14px rgba(0,0,0,.8);
@@ -284,6 +287,8 @@ select{cursor:pointer}
   font:500 12.5px/1 var(--sans);color:var(--ink-2);padding:7px 12px;
 }
 .segmented button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+.sel{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink-3)}
+.sel select{width:auto;padding:6px 8px;font-size:12.5px}
 .paper-stage{
   padding:22px 18px 34px;background:var(--sunken);
   border-radius:0 0 var(--r-lg) var(--r-lg);
@@ -371,9 +376,12 @@ select{cursor:pointer}
 
 /* nota sheet (struk thermal 80mm) */
 .sheet-nota{
-  width:302px;max-width:100%;padding:20px 18px 24px;font-family:var(--mono);font-size:11px;line-height:1.62;
+  width:302px;max-width:100%;padding:20px 18px 24px;font-size:11px;line-height:1.62;
 }
-.sheet-nota::after{
+.sheet-nota.k-a5,.sheet-nota.k-a4{padding:28px 26px 30px;font-size:12px;line-height:1.55}
+.sheet-nota.k-58{padding:16px 13px 20px;font-size:10.5px}
+.sheet-nota.m-termal{font-family:var(--mono)}
+.sheet-nota.m-termal.k-roll::after{
   content:"";position:absolute;left:0;right:0;bottom:-14px;height:14px;
   background:
     linear-gradient(-48deg,transparent 7px,var(--paper) 0) 0 0 repeat-x,
@@ -397,6 +405,72 @@ select{cursor:pointer}
   text-align:center;border:2px solid var(--stamp);color:var(--stamp);
   font-weight:600;letter-spacing:.22em;padding:3px;margin:10px 0 2px;
 }
+
+/* model: ringkas */
+.sheet-nota.m-ringkas{font-family:var(--sans)}
+.nr-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.nr-biz{font-family:var(--display);font-weight:700;font-size:16px;line-height:1.15}
+.nr-addr{font-size:10px;color:var(--paper-ink-2);white-space:pre-line;margin-top:2px}
+.nr-no{text-align:right;flex:none;font-size:10px;color:var(--paper-ink-2);
+  font-variant-numeric:tabular-nums;line-height:1.55}
+.nr-no b{display:block;color:var(--paper-ink);font-weight:500}
+.nr-line{border-top:1px solid var(--paper-ink);margin:11px 0 6px;height:0}
+.nr-thin{border-top:1px solid var(--paper-line);margin:8px 0;height:0}
+.nr-item{display:flex;justify-content:space-between;gap:12px;padding:4px 0;align-items:baseline}
+.nr-item .nm{min-width:0;overflow-wrap:anywhere}
+.nr-item .sub{display:block;color:var(--paper-ink-2);font-size:10px;font-variant-numeric:tabular-nums}
+.nr-item .amt{font-variant-numeric:tabular-nums;white-space:nowrap}
+.nr-tot{display:flex;justify-content:space-between;gap:12px;padding:2.5px 0;font-variant-numeric:tabular-nums}
+.nr-tot.muted{color:var(--paper-ink-2)}
+.nr-tot.grand{font-weight:600;font-size:14.5px;border-top:1px solid var(--paper-ink);
+  margin-top:6px;padding-top:7px}
+
+/* model: nota kontan */
+.sheet-nota.m-klasik{font-family:var(--sans);border:1px solid var(--paper-ink)}
+.nk-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;
+  padding-bottom:9px;border-bottom:2px solid var(--paper-ink)}
+.nk-biz{font-family:var(--display);font-weight:700;font-size:17px;line-height:1.15}
+.nk-addr{font-size:10px;color:var(--paper-ink-2);white-space:pre-line;margin-top:2px}
+.nk-title{text-align:right;flex:none}
+.nk-title b{display:block;font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:.2em}
+.nk-meta{font-size:10px;margin-top:4px;font-variant-numeric:tabular-nums;line-height:1.5}
+.nk-to{display:flex;gap:7px;align-items:baseline;font-size:10.5px;padding:8px 0 9px;
+  border-bottom:1px solid var(--paper-ink)}
+.nk-to i{font-style:normal;color:var(--paper-ink-2);white-space:nowrap}
+.nk-to span{flex:1;min-width:0;border-bottom:1px dotted var(--paper-line);overflow-wrap:anywhere}
+table.nk{width:100%;border-collapse:collapse;font-size:10.5px;margin-top:11px}
+table.nk th{background:var(--paper-accent-soft);font-size:9px;letter-spacing:.07em;
+  text-transform:uppercase;font-weight:600;padding:5px 6px;border:1px solid var(--paper-ink);text-align:left}
+table.nk td{padding:5px 6px;border:1px solid var(--paper-line);vertical-align:top;overflow-wrap:anywhere}
+table.nk .r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.nk tfoot td{border-color:var(--paper-ink)}
+table.nk tfoot .lbl{text-align:right;color:var(--paper-ink-2)}
+table.nk tfoot tr:last-child td{font-weight:700;font-size:12px}
+.nk-terbilang{font-size:10px;margin-top:9px;font-style:italic;color:var(--paper-ink-2);overflow-wrap:anywhere}
+.nk-sign{display:flex;justify-content:space-between;gap:18px;margin-top:14px;font-size:10px;text-align:center}
+.nk-sign div{flex:1;min-width:0}
+.nk-sign .ln{border-bottom:1px solid var(--paper-ink);margin:32px 4px 4px;height:0}
+
+/* model: modern */
+.sheet-nota.m-modern{font-family:var(--sans)}
+.nm-brand{font-family:var(--display);font-weight:700;font-size:19px;line-height:1.1;
+  color:var(--paper-accent);letter-spacing:-.01em}
+.nm-addr{font-size:10px;color:var(--paper-ink-2);white-space:pre-line;margin-top:3px}
+.nm-rule{height:3px;background:var(--paper-accent);border-radius:2px;margin:11px 0 13px}
+.nm-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 12px;
+  font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--paper-ink-2);margin-bottom:13px}
+.nm-meta b{display:block;font-size:11px;letter-spacing:0;text-transform:none;font-weight:500;
+  color:var(--paper-ink);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.nm-item{display:flex;justify-content:space-between;gap:11px;align-items:baseline;
+  padding:6px 0;border-bottom:1px dotted var(--paper-line)}
+.nm-item .nm{min-width:0;overflow-wrap:anywhere}
+.nm-item .q{display:block;color:var(--paper-ink-2);font-size:10px;font-variant-numeric:tabular-nums}
+.nm-item .amt{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:500}
+.nm-total{margin-top:13px;background:var(--paper-accent-soft);border-radius:9px;padding:12px 14px}
+.nm-total div{display:flex;justify-content:space-between;gap:12px;padding:2.5px 0;
+  font-size:11px;font-variant-numeric:tabular-nums}
+.nm-total .big{font-size:16px;font-weight:700;padding-top:8px;margin-top:5px;
+  border-top:1px solid var(--paper-accent);color:var(--paper-accent)}
 
 /* bukti bayar (produk digital) */
 .sheet-bukti{
@@ -482,9 +556,10 @@ table.list .nm{font-weight:500}
   .paper-stage{padding:0;background:transparent;max-height:none;overflow:visible;display:block}
   .sheet{display:none!important;box-shadow:none;max-width:none;width:auto;min-height:0;padding:0;background:#fff;color:#000}
   body.cetak-invoice .sheet-invoice{display:block!important;border-top:0}
-  body.cetak-nota .sheet-nota{display:block!important;width:72mm;margin:0 auto}
-  body.cetak-bukti .sheet-bukti{display:block!important;width:72mm;margin:0 auto;border-radius:0}
+  body.cetak-nota .sheet-nota{display:block!important;margin:0 auto}
+  body.cetak-bukti .sheet-bukti{display:block!important;margin:0 auto;border-radius:0}
   .sheet-nota::after{display:none}
+  .sheet-nota.m-klasik{border-color:#000}
   .inv-table tr,.nota-item{break-inside:avoid}
 }
 </style>
@@ -725,6 +800,22 @@ table.list .nm{font-weight:500}
           <button type="button" id="segNota" aria-pressed="false" data-doc="nota">Nota 80&nbsp;mm</button>
           <button type="button" id="segBukti" aria-pressed="false" data-doc="bukti">Bukti bayar</button>
         </div>
+        <label class="sel" id="wrapModel"><span>Model</span>
+          <select id="selModel" aria-label="Model nota">
+            <option value="termal">Struk termal</option>
+            <option value="ringkas">Ringkas</option>
+            <option value="klasik">Nota kontan</option>
+            <option value="modern">Modern</option>
+          </select>
+        </label>
+        <label class="sel" id="wrapUkuran"><span>Ukuran</span>
+          <select id="selUkuran" aria-label="Ukuran kertas">
+            <option value="58">58 mm</option>
+            <option value="80">80 mm</option>
+            <option value="a5">A5</option>
+            <option value="a4">A4</option>
+          </select>
+        </label>
         <button type="button" class="btn btn-sm" id="btnCetak" style="margin-left:auto">Cetak</button>
         <button type="button" class="btn btn-sm" id="btnUnduh" hidden>Unduh .html</button>
       </div>
@@ -935,6 +1026,8 @@ table.list .nm{font-weight:500}
     rek: "8720 114 556",
     an: "CV Sinar Rejeki Supply",
     prefix: "INV",
+    notaModel: "termal",
+    notaUkuran: "80",
     ppn: 11,
     ppnDefault: false,
     syarat: "Pembayaran ditransfer ke rekening di atas. Cantumkan nomor faktur pada berita transfer.",
@@ -1247,41 +1340,183 @@ table.list .nm{font-weight:500}
     (c.key === "lunas" ? "<div class='stamp'>Lunas<small>" + tglPendek(t.tanggal) + "</small></div>" : "");
   }
 
-  /* ---------------- dokumen: nota (struk 80 mm) ---------------- */
-  function gambarNota(t){
-    var k = state.toko, c = status(t), n = t.nomor || nomorBerikut();
-    var baris = barisTerpakai(t).map(function(it){
-      var bruto = angka(it.qty) * angka(it.harga);
-      var jml = bruto - bruto * angka(it.disk) / 100;
-      return "<div class='nota-item'><div class='nm'>" + esc(it.d || "—") + "</div>" +
+  /* ---------------- dokumen: nota (4 model, 4 ukuran) ---------------- */
+  var UKURAN = {
+    "58": { lebar:222, cetak:"size:58mm auto;margin:3mm", cetakLebar:"52mm", roll:true },
+    "80": { lebar:302, cetak:"size:80mm auto;margin:4mm", cetakLebar:"72mm", roll:true },
+    "a5": { lebar:430, cetak:"size:A5;margin:10mm",      cetakLebar:"auto", roll:false },
+    "a4": { lebar:580, cetak:"size:A4;margin:14mm",      cetakLebar:"auto", roll:false }
+  };
+  var MODEL = ["termal","ringkas","klasik","modern"];
+
+  function dataNota(t){
+    var c = status(t);
+    return {
+      k: state.toko, c: c, n: t.nomor || nomorBerikut(),
+      waktu: tglPendek(t.tanggal) + " " + (t.waktu ? t.waktu.slice(0,5) : jamCetak().slice(-5)),
+      items: barisTerpakai(t).map(function(it){
+        var bruto = angka(it.qty) * angka(it.harga);
+        return { d: it.d || "—", qty: it.qty, satuan: it.satuan, harga: it.harga,
+                 disk: angka(it.disk), jml: bruto - bruto * angka(it.disk) / 100 };
+      })
+    };
+  }
+  /* Baris tambahan yang hanya muncul bila dipakai. */
+  function rincianNota(t, c){
+    var r = [];
+    if(c.diskon) r.push(["Diskon" + (t.diskonTipe === "persen" ? " " + num(t.diskon) + "%" : ""), -c.diskon]);
+    if(angka(t.ongkir)) r.push(["Ongkos kirim", angka(t.ongkir)]);
+    if(t.ppnAktif) r.push(["PPN " + num(t.ppn) + "%", c.ppn]);
+    return r;
+  }
+  function nilai(v){ return (v < 0 ? "−" : "") + num(Math.abs(v)); }
+  function footerNota(k){
+    return "<div class='nota-foot'>" + esc(k.footerNota) +
+      "\nSimpan nota ini sebagai bukti pembayaran yang sah.\nDicetak " + jamCetak() + "</div>";
+  }
+
+  function notaTermal(t){
+    var d = dataNota(t), k = d.k, c = d.c;
+    var baris = d.items.map(function(it){
+      return "<div class='nota-item'><div class='nm'>" + esc(it.d) + "</div>" +
         "<div class='qt'><span>" + num(it.qty) + " " + esc(it.satuan) + " &times; " + num(it.harga) +
-        (angka(it.disk) ? " &minus;" + num(it.disk) + "%" : "") + "</span><b>" + num(jml) + "</b></div></div>";
+        (it.disk ? " &minus;" + num(it.disk) + "%" : "") + "</span><b>" + num(it.jml) + "</b></div></div>";
     }).join("");
-
-    var tot = "";
-    tot += "<div class='nota-tot'><span>Subtotal</span><span>" + num(c.subtotal) + "</span></div>";
-    if(c.diskon) tot += "<div class='nota-tot'><span>Diskon</span><span>-" + num(c.diskon) + "</span></div>";
-    if(angka(t.ongkir)) tot += "<div class='nota-tot'><span>Ongkir</span><span>" + num(t.ongkir) + "</span></div>";
-    if(t.ppnAktif) tot += "<div class='nota-tot'><span>PPN " + num(t.ppn) + "%</span><span>" + num(c.ppn) + "</span></div>";
-
+    var tot = "<div class='nota-tot'><span>Subtotal</span><span>" + num(c.subtotal) + "</span></div>";
+    rincianNota(t, c).forEach(function(r){
+      tot += "<div class='nota-tot'><span>" + esc(r[0]) + "</span><span>" + nilai(r[1]) + "</span></div>";
+    });
     return "" +
-    "<div class='nota-c'><div class='nota-biz'>" + esc(k.nama) + "</div>" +
-      "<div class='nota-sub'>" + esc(k.alamat) + "\nTelp " + esc(k.telp) + "</div></div>" +
-    "<div class='rule'></div>" +
-    "<div class='nota-kv'><span>No</span><span>" + esc(n) + "</span></div>" +
-    "<div class='nota-kv'><span>Waktu</span><span>" + tglPendek(t.tanggal) + " " + jamCetak().slice(-5) + "</span></div>" +
-    "<div class='nota-kv'><span>Kasir</span><span>" + esc(t.kasir || "-") + "</span></div>" +
-    "<div class='nota-kv'><span>Pelanggan</span><span>" + esc(t.pelanggan || "Umum") + "</span></div>" +
-    "<div class='rule'></div>" +
-    baris +
-    "<div class='rule'></div>" +
-    tot +
-    "<div class='nota-tot big'><span>TOTAL</span><span>" + num(c.total) + "</span></div>" +
-    "<div class='nota-tot'><span>" + esc(t.metode) + "</span><span>" + num(c.dibayar) + "</span></div>" +
-    "<div class='nota-tot'><span>" + (c.kembali ? "Kembali" : "Sisa") + "</span><span>" + num(c.kembali || c.sisa) + "</span></div>" +
-    (c.key === "lunas" ? "<div class='nota-lunas'>LUNAS</div>" : "") +
-    "<div class='rule'></div>" +
-    "<div class='nota-foot'>" + esc(k.footerNota) + "\nSimpan nota ini sebagai bukti pembayaran yang sah.\nDicetak " + jamCetak() + "</div>";
+      "<div class='nota-c'><div class='nota-biz'>" + esc(k.nama) + "</div>" +
+        "<div class='nota-sub'>" + esc(k.alamat) + "\nTelp " + esc(k.telp) + "</div></div>" +
+      "<div class='rule'></div>" +
+      "<div class='nota-kv'><span>No</span><span>" + esc(d.n) + "</span></div>" +
+      "<div class='nota-kv'><span>Waktu</span><span>" + d.waktu + "</span></div>" +
+      "<div class='nota-kv'><span>Kasir</span><span>" + esc(t.kasir || "-") + "</span></div>" +
+      "<div class='nota-kv'><span>Pelanggan</span><span>" + esc(t.pelanggan || "Umum") + "</span></div>" +
+      "<div class='rule'></div>" + baris + "<div class='rule'></div>" + tot +
+      "<div class='nota-tot big'><span>TOTAL</span><span>" + num(c.total) + "</span></div>" +
+      "<div class='nota-tot'><span>" + esc(t.metode) + "</span><span>" + num(c.dibayar) + "</span></div>" +
+      "<div class='nota-tot'><span>" + (c.kembali ? "Kembali" : "Sisa") + "</span><span>" +
+        num(c.kembali || c.sisa) + "</span></div>" +
+      (c.key === "lunas" ? "<div class='nota-lunas'>LUNAS</div>" : "") +
+      "<div class='rule'></div>" + footerNota(k);
+  }
+
+  function notaRingkas(t){
+    var d = dataNota(t), k = d.k, c = d.c;
+    var baris = d.items.map(function(it){
+      return "<div class='nr-item'><span class='nm'>" + esc(it.d) +
+        "<span class='sub'>" + num(it.qty) + " " + esc(it.satuan) + " &times; " + rp(it.harga) +
+        (it.disk ? " &minus;" + num(it.disk) + "%" : "") + "</span></span>" +
+        "<span class='amt'>" + rp(it.jml) + "</span></div>";
+    }).join("");
+    var tot = "<div class='nr-tot muted'><span>Subtotal</span><span>" + rp(c.subtotal) + "</span></div>";
+    rincianNota(t, c).forEach(function(r){
+      tot += "<div class='nr-tot muted'><span>" + esc(r[0]) + "</span><span>" +
+        (r[1] < 0 ? "−" : "") + rp(Math.abs(r[1])) + "</span></div>";
+    });
+    return "" +
+      "<div class='nr-head'><div><div class='nr-biz'>" + esc(k.nama) + "</div>" +
+        "<div class='nr-addr'>" + esc(k.alamat) + "\n" + esc(k.telp) + "</div></div>" +
+        "<div class='nr-no'><b>" + esc(d.n) + "</b>" + d.waktu +
+        (t.kasir ? "<br>Kasir " + esc(t.kasir) : "") + "</div></div>" +
+      "<div class='nr-line'></div>" +
+      "<div class='nr-tot muted'><span>Pelanggan</span><span>" + esc(t.pelanggan || "Umum") + "</span></div>" +
+      "<div class='nr-thin'></div>" + baris + "<div class='nr-thin'></div>" + tot +
+      "<div class='nr-tot grand'><span>Total</span><span>" + rp(c.total) + "</span></div>" +
+      "<div class='nr-tot muted'><span>" + esc(t.metode) + "</span><span>" + rp(c.dibayar) + "</span></div>" +
+      "<div class='nr-tot muted'><span>" + (c.kembali ? "Kembalian" : "Sisa tagihan") + "</span><span>" +
+        rp(c.kembali || c.sisa) + "</span></div>" +
+      (c.key === "lunas" ? "<div class='nota-lunas'>LUNAS</div>" : "") +
+      footerNota(k);
+  }
+
+  function notaKlasik(t){
+    var d = dataNota(t), k = d.k, c = d.c;
+    var baris = d.items.map(function(it){
+      return "<tr><td class='r'>" + num(it.qty) + " " + esc(it.satuan) + "</td>" +
+        "<td>" + esc(it.d) + (it.disk ? " (disk " + num(it.disk) + "%)" : "") + "</td>" +
+        "<td class='r'>" + num(it.harga) + "</td>" +
+        "<td class='r'>" + num(it.jml) + "</td></tr>";
+    }).join("");
+    var kaki = "<tr><td class='lbl' colspan='3'>Jumlah</td><td class='r'>" + num(c.subtotal) + "</td></tr>";
+    rincianNota(t, c).forEach(function(r){
+      kaki += "<tr><td class='lbl' colspan='3'>" + esc(r[0]) + "</td><td class='r'>" + nilai(r[1]) + "</td></tr>";
+    });
+    kaki += "<tr><td class='lbl' colspan='3'>Total</td><td class='r'>" + rp(c.total) + "</td></tr>";
+    return "" +
+      "<div class='nk-head'><div><div class='nk-biz'>" + esc(k.nama) + "</div>" +
+        "<div class='nk-addr'>" + esc(k.alamat) + "\nTelp " + esc(k.telp) + "</div></div>" +
+        "<div class='nk-title'><b>NOTA</b><div class='nk-meta'>No. " + esc(d.n) +
+        "<br>" + tglPanjang(t.tanggal) + "</div></div></div>" +
+      "<div class='nk-to'><i>Kepada Yth.</i><span>" + esc(t.pelanggan || "Pelanggan umum") + "</span></div>" +
+      "<table class='nk'><thead><tr>" +
+        "<th class='r'>Banyaknya</th><th>Nama Barang</th><th class='r'>Harga</th><th class='r'>Jumlah</th>" +
+      "</tr></thead><tbody>" + baris + "</tbody><tfoot>" + kaki + "</tfoot></table>" +
+      "<div class='nk-terbilang'>Terbilang: " + esc(terbilang(c.total)) + "</div>" +
+      (c.key === "lunas" ? "<div class='nota-lunas'>LUNAS</div>" : "") +
+      "<div class='nk-sign'>" +
+        "<div>Tanda Terima<div class='ln'></div>" + esc(t.pelanggan || "") + "</div>" +
+        "<div>Hormat Kami<div class='ln'></div>" + esc(t.kasir || k.nama) + "</div>" +
+      "</div>" + footerNota(k);
+  }
+
+  function notaModern(t){
+    var d = dataNota(t), k = d.k, c = d.c;
+    var baris = d.items.map(function(it){
+      return "<div class='nm-item'><span class='nm'>" + esc(it.d) +
+        "<span class='q'>" + num(it.qty) + " " + esc(it.satuan) + " &times; " + rp(it.harga) +
+        (it.disk ? " &minus;" + num(it.disk) + "%" : "") + "</span></span>" +
+        "<span class='amt'>" + rp(it.jml) + "</span></div>";
+    }).join("");
+    var tot = "<div><span>Subtotal</span><span>" + rp(c.subtotal) + "</span></div>";
+    rincianNota(t, c).forEach(function(r){
+      tot += "<div><span>" + esc(r[0]) + "</span><span>" +
+        (r[1] < 0 ? "−" : "") + rp(Math.abs(r[1])) + "</span></div>";
+    });
+    return "" +
+      "<div class='nm-brand'>" + esc(k.nama) + "</div>" +
+      "<div class='nm-addr'>" + esc(k.alamat) + "\n" + esc(k.telp) + "</div>" +
+      "<div class='nm-rule'></div>" +
+      "<div class='nm-meta'>" +
+        "<div>No. nota<b>" + esc(d.n) + "</b></div>" +
+        "<div>Waktu<b>" + d.waktu + "</b></div>" +
+        "<div>Pelanggan<b>" + esc(t.pelanggan || "Umum") + "</b></div>" +
+        "<div>Kasir<b>" + esc(t.kasir || "-") + "</b></div>" +
+      "</div>" + baris +
+      "<div class='nm-total'>" + tot +
+        "<div class='big'><span>Total</span><span>" + rp(c.total) + "</span></div>" +
+        "<div><span>" + esc(t.metode) + "</span><span>" + rp(c.dibayar) + "</span></div>" +
+        "<div><span>" + (c.kembali ? "Kembalian" : "Sisa tagihan") + "</span><span>" +
+          rp(c.kembali || c.sisa) + "</span></div>" +
+      "</div>" +
+      (c.key === "lunas" ? "<div class='nota-lunas'>LUNAS</div>" : "") +
+      footerNota(k);
+  }
+
+  function gambarNota(t){
+    var m = state.toko.notaModel || "termal";
+    if(m === "ringkas") return notaRingkas(t);
+    if(m === "klasik") return notaKlasik(t);
+    if(m === "modern") return notaModern(t);
+    return notaTermal(t);
+  }
+
+  /* Menerapkan model & ukuran ke lembar pratinjau. */
+  function terapkanNota(){
+    var kode = UKURAN[state.toko.notaUkuran] ? state.toko.notaUkuran : "80";
+    var u = UKURAN[kode];
+    var m = MODEL.indexOf(state.toko.notaModel) >= 0 ? state.toko.notaModel : "termal";
+    var sn = $("sheetNota");
+    MODEL.forEach(function(x){ sn.classList.toggle("m-" + x, x === m); });
+    Object.keys(UKURAN).forEach(function(x){ sn.classList.toggle("k-" + x, x === kode); });
+    sn.classList.toggle("k-roll", u.roll);
+    sn.classList.toggle("k-sheet", !u.roll);
+    sn.style.width = u.lebar + "px";
+    $("sheetBukti").style.width = Math.min(u.lebar, 430) + "px";
+    if($("selModel").value !== m) $("selModel").value = m;
+    if($("selUkuran").value !== kode) $("selUkuran").value = kode;
   }
 
   /* ---------------- dokumen: bukti bayar (produk digital) ---------------- */
@@ -1422,6 +1657,10 @@ table.list .nm{font-weight:500}
     $("sheetNota").classList.toggle("aktif", doc === "nota");
     $("sheetBukti").classList.toggle("aktif", doc === "bukti");
 
+    $("wrapModel").hidden = doc !== "nota";
+    $("wrapUkuran").hidden = doc === "invoice";
+    terapkanNota();
+
     var digital = doc === "bukti";
     state.draft.mode = digital ? "digital" : "barang";
     $("fsDigital").hidden = !digital;
@@ -1498,8 +1737,9 @@ table.list .nm{font-weight:500}
 
   function cetak(){
     var nota = state.doc === "nota", bukti = state.doc === "bukti";
+    var u = UKURAN[state.toko.notaUkuran] || UKURAN["80"];
     $("pageRule").textContent = (nota || bukti)
-      ? "@media print{@page{size:80mm auto;margin:4mm}}"
+      ? "@media print{@page{" + u.cetak + "}.sheet-nota,.sheet-bukti{width:" + u.cetakLebar + "!important;margin:0 auto}}"
       : "@media print{@page{size:A4;margin:14mm}}";
     document.body.classList.toggle("cetak-nota", nota);
     document.body.classList.toggle("cetak-bukti", bukti);
@@ -1513,12 +1753,22 @@ table.list .nm{font-weight:500}
     var gaya = Array.prototype.map.call(document.querySelectorAll("style"), function(s){ return s.textContent; }).join("\n");
     var isi = doc === "nota" ? gambarNota(t) : doc === "bukti" ? gambarBukti(t) : gambarFaktur(t);
     var kelas = "sheet aktif " + (doc === "nota" ? "sheet-nota" : doc === "bukti" ? "sheet-bukti" : "sheet-invoice");
+    var gayaLembar = "";
+    if(doc === "nota" || doc === "bukti"){
+      var kode = UKURAN[state.toko.notaUkuran] ? state.toko.notaUkuran : "80";
+      var u2 = UKURAN[kode];
+      if(doc === "nota"){
+        kelas += " m-" + (MODEL.indexOf(state.toko.notaModel) >= 0 ? state.toko.notaModel : "termal") +
+          " k-" + kode + (u2.roll ? " k-roll" : " k-sheet");
+      }
+      gayaLembar = "width:" + (doc === "bukti" ? Math.min(u2.lebar, 430) : u2.lebar) + "px;";
+    }
     return "<!DOCTYPE html><html lang='id'><head><meta charset='utf-8'>" +
       "<title>" + esc(t.nomor || nomorBerikut()) + "</title>" +
       "<link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap'>" +
       "<style>" + gaya + "\nbody{background:#fff;padding:24px;display:flex;justify-content:center}" +
       ".sheet{display:block!important}</style></head><body>" +
-      "<article class='" + kelas + "'>" + isi + "</article></body></html>";
+      "<article class='" + kelas + "' style='" + gayaLembar + "'>" + isi + "</article></body></html>";
   }
 
   function buangPetunjuk(){
@@ -1534,6 +1784,17 @@ table.list .nm{font-weight:500}
     $("segInvoice").addEventListener("click", function(){ pilihDok("invoice"); });
     $("segNota").addEventListener("click", function(){ pilihDok("nota"); });
     $("segBukti").addEventListener("click", function(){ pilihDok("bukti"); });
+
+    function simpanTampilanNota(){
+      state.toko.notaModel = $("selModel").value;
+      state.toko.notaUkuran = $("selUkuran").value;
+      tulisLokal();
+      terapkanNota();
+      render();
+      if(db) db.doc("pengaturan/toko").set(state.toko).catch(function(){});
+    }
+    $("selModel").addEventListener("change", simpanTampilanNota);
+    $("selUkuran").addEventListener("change", simpanTampilanNota);
 
     ikat.forEach(function(b){
       $(b[0]).addEventListener("input", function(){
@@ -1648,6 +1909,7 @@ table.list .nm{font-weight:500}
         state.toko = Object.assign({}, TOKO_DEFAULT, snap.data());
         if(window.__isiToko) window.__isiToko();
         tulisLokal();
+        terapkanNota();
         render();
       }, function(){ tandaiSync("local", "Tersimpan di perangkat ini"); });
 

@@ -13,6 +13,7 @@ atau proses build.
 | --- | --- |
 | Transaksi | Input pelanggan, baris barang/jasa, diskon, ongkir, PPN, dan pembayaran. Pratinjau dokumen ikut berubah saat mengetik. |
 | Bukti bayar | Mode khusus produk digital: pulsa, paket data, token listrik, voucher game, top up e-wallet, tagihan, transfer. |
+| Model & ukuran | Empat model nota dan empat ukuran kertas, dipilih di atas pratinjau. |
 | Riwayat | Daftar transaksi tersimpan dengan pencarian, filter status, buka kembali, duplikat, dan hapus. |
 | Pengaturan | Identitas usaha, NPWP, rekening pembayaran, prefiks nomor, tarif PPN default, dan teks penutup nota. |
 
@@ -28,6 +29,34 @@ sudah diterima, piutang, dan jumlah dokumen.
 - PPN 11% sebagai default yang bisa dimatikan atau diubah tarifnya.
 - Stempel **LUNAS** muncul di faktur begitu sisa tagihan nol.
 - Nota memakai lebar 80 mm dan huruf monospace seperti keluaran printer termal.
+
+## Model nota & ukuran kertas
+
+Dua pilihan di atas pratinjau mengubah tampilan nota tanpa menyentuh datanya.
+
+**Model** — empat gaya yang dipilih lewat menu Model:
+
+| Model | Tampilan | Cocok untuk |
+| --- | --- | --- |
+| Struk termal | Huruf monospace, garis putus-putus, kepala di tengah | Printer termal di kasir |
+| Ringkas | Huruf sans, garis tipis, nominal rata kanan | Nota rapi tanpa hiasan |
+| Nota kontan | Berbingkai, tabel Banyaknya–Nama Barang–Harga–Jumlah, kolom Tanda Terima dan Hormat Kami | Pengganti buku nota karbon |
+| Modern | Nama usaha berwarna, rincian bergaris titik, blok total bernada warna | Nota yang dikirim sebagai gambar |
+
+**Ukuran** — 58 mm, 80 mm, A5, dan A4. Pilihan ini mengatur lebar pratinjau
+sekaligus ukuran halaman saat dicetak:
+
+| Ukuran | Halaman cetak | Lebar dokumen |
+| --- | --- | --- |
+| 58 mm | gulungan 58 mm, margin 3 mm | 52 mm |
+| 80 mm | gulungan 80 mm, margin 4 mm | 72 mm |
+| A5 | A5, margin 10 mm | selebar area cetak |
+| A4 | A4, margin 14 mm | selebar area cetak |
+
+Ukuran juga berlaku untuk bukti bayar. Model apa pun bisa dipasangkan dengan
+ukuran apa pun — Nota kontan paling enak dibaca di A5 atau A4, sedangkan Struk
+termal dirancang untuk 58 mm dan 80 mm. Pilihan terakhir ikut tersimpan bersama
+pengaturan usaha, jadi tidak perlu diatur ulang tiap transaksi.
 
 ## Bukti bayar produk digital
 
@@ -73,8 +102,8 @@ diskon dan PPN, dan pembayaran dianggap lunas di tempat selama statusnya
 ## Mencetak
 
 Tombol **Cetak** menyesuaikan ukuran halaman dengan dokumen yang sedang dipilih:
-A4 dengan margin 14 mm untuk faktur, dan gulungan 80 mm dengan margin 4 mm untuk
-nota maupun bukti bayar. Hanya dokumen terpilih yang ikut tercetak.
+faktur selalu A4 dengan margin 14 mm, sedangkan nota dan bukti bayar mengikuti
+pilihan Ukuran di atas pratinjau. Hanya dokumen terpilih yang ikut tercetak.
 
 ## Penyimpanan
 
