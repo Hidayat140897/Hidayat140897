@@ -33,6 +33,7 @@
   --paper-ink:#1b1c19;
   --paper-ink-2:#5e615a;
   --paper-line:#d9dad2;
+  --paper-accent:#0f6e5c;
   --focus:#0f6e5c;
   --shadow-sm:0 1px 2px rgba(22,38,42,.07);
   --shadow-md:0 1px 2px rgba(22,38,42,.06),0 10px 24px -14px rgba(22,38,42,.35);
@@ -64,6 +65,7 @@
     --paper-ink:#1b1c19;
     --paper-ink-2:#5e615a;
     --paper-line:#d3d4cb;
+    --paper-accent:#0f6e5c;
     --focus:#45b394;
     --shadow-sm:0 1px 2px rgba(0,0,0,.3);
     --shadow-md:0 1px 2px rgba(0,0,0,.3),0 10px 24px -14px rgba(0,0,0,.8);
@@ -91,6 +93,7 @@
   --paper-ink:#1b1c19;
   --paper-ink-2:#5e615a;
   --paper-line:#d3d4cb;
+  --paper-accent:#0f6e5c;
   --focus:#45b394;
   --shadow-sm:0 1px 2px rgba(0,0,0,.3);
   --shadow-md:0 1px 2px rgba(0,0,0,.3),0 10px 24px -14px rgba(0,0,0,.8);
@@ -395,6 +398,40 @@ select{cursor:pointer}
   font-weight:600;letter-spacing:.22em;padding:3px;margin:10px 0 2px;
 }
 
+/* bukti bayar (produk digital) */
+.sheet-bukti{
+  width:348px;max-width:100%;padding:26px 24px 22px;border-radius:12px;
+  font-family:var(--sans);font-size:12px;line-height:1.5;
+}
+.bukti-brand{text-align:center;margin-bottom:22px}
+.bukti-brand b{
+  display:block;font-family:var(--display);font-weight:700;font-size:27px;
+  line-height:1.02;letter-spacing:-.015em;color:var(--paper-accent);
+}
+.bukti-brand span{display:block;font-size:14px;color:var(--paper-accent);opacity:.82;margin-top:1px}
+.bukti-list{margin:0}
+.bukti-row{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;padding:5px 0}
+.bukti-row dt{color:var(--paper-ink-2);flex:0 1 43%;min-width:0}
+.bukti-row dd{
+  margin:0;text-align:right;flex:1 1 auto;min-width:0;overflow-wrap:anywhere;
+  font-variant-numeric:tabular-nums;color:var(--paper-ink);
+}
+.bukti-rule{border-top:1.5px dashed var(--paper-line);margin:15px 0 13px}
+.bukti-total{display:flex;justify-content:space-between;gap:16px;font-weight:600;font-size:15.5px}
+.bukti-total span:last-child{font-variant-numeric:tabular-nums;white-space:nowrap}
+.bukti-gagal .bukti-total span:last-child{text-decoration:line-through;color:var(--paper-ink-2)}
+.bukti-foot{
+  margin-top:16px;padding-top:12px;border-top:1px solid var(--paper-line);
+  font-size:10.5px;color:var(--paper-ink-2);text-align:center;white-space:pre-line;
+}
+.margin-info{
+  display:flex;justify-content:space-between;gap:12px;align-items:baseline;
+  margin-top:10px;padding:9px 12px;border-radius:var(--r-sm);
+  background:var(--accent-soft);font-size:12.5px;
+}
+.margin-info b{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:14px;color:var(--accent-ink)}
+.margin-info.rugi b{color:var(--stamp)}
+
 /* ---------- riwayat ---------- */
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}
 .toolbar input[type="search"]{max-width:260px}
@@ -446,6 +483,7 @@ table.list .nm{font-weight:500}
   .sheet{display:none!important;box-shadow:none;max-width:none;width:auto;min-height:0;padding:0;background:#fff;color:#000}
   body.cetak-invoice .sheet-invoice{display:block!important;border-top:0}
   body.cetak-nota .sheet-nota{display:block!important;width:72mm;margin:0 auto}
+  body.cetak-bukti .sheet-bukti{display:block!important;width:72mm;margin:0 auto;border-radius:0}
   .sheet-nota::after{display:none}
   .inv-table tr,.nota-item{break-inside:avoid}
 }
@@ -533,7 +571,7 @@ table.list .nm{font-weight:500}
           </div>
         </fieldset>
 
-        <fieldset>
+        <fieldset id="fsBarang">
           <legend>Rincian barang &amp; jasa</legend>
           <div class="item-head" aria-hidden="true">
             <span>Deskripsi</span><span>Qty</span><span>Satuan</span><span>Harga</span><span>Disk %</span><span>Jumlah</span><span></span>
@@ -541,6 +579,73 @@ table.list .nm{font-weight:500}
           <div class="items" id="itemRows"></div>
           <div style="margin-top:10px">
             <button type="button" class="btn btn-sm" id="btnTambahItem">+ Tambah baris</button>
+          </div>
+        </fieldset>
+
+        <fieldset id="fsDigital" hidden>
+          <legend>Data transaksi digital</legend>
+          <div class="grid g2">
+            <div class="field">
+              <label for="dJenis">Jenis transaksi</label>
+              <select id="dJenis">
+                <option>Paket Data</option>
+                <option>Pulsa</option>
+                <option>Token Listrik</option>
+                <option>Voucher Game</option>
+                <option>Top Up E-Wallet</option>
+                <option>Bayar Tagihan</option>
+                <option>Transfer Dana</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="dStatus">Status</label>
+              <select id="dStatus">
+                <option>Sukses</option>
+                <option>Pending</option>
+                <option>Gagal</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid" style="margin-top:12px">
+            <div class="field">
+              <label for="dPaket">Nama produk / paket</label>
+              <input id="dPaket" type="text" placeholder="UnlimitedMAX 35 GB" autocomplete="off">
+            </div>
+          </div>
+          <div class="grid g2" style="margin-top:12px">
+            <div class="field">
+              <label for="dPelangganNo">No. pelanggan</label>
+              <input id="dPelangganNo" type="text" placeholder="Nomor HP, ID meter, atau ID akun" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="dSerial">Serial number</label>
+              <input id="dSerial" type="text" placeholder="Dari struk provider" autocomplete="off">
+            </div>
+          </div>
+          <div class="grid g2" style="margin-top:12px">
+            <div class="field">
+              <label for="dOrderId">Order ID</label>
+              <input id="dOrderId" type="text" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="dWaktu">Waktu transaksi</label>
+              <input id="dWaktu" type="time" step="1">
+            </div>
+          </div>
+          <div class="grid g2" style="margin-top:12px">
+            <div class="field">
+              <label for="dModal">Harga modal</label>
+              <input id="dModal" type="number" min="0" step="any" value="0">
+              <span class="hint">Yang terpotong dari saldo Anda.</span>
+            </div>
+            <div class="field">
+              <label for="dHargaAkhir">Atur harga akhir</label>
+              <input id="dHargaAkhir" type="number" min="0" step="any" value="0">
+              <span class="hint">Yang tercetak di bukti bayar.</span>
+            </div>
+          </div>
+          <div class="margin-info" id="marginInfo" hidden>
+            <span>Margin transaksi ini</span><b>Rp 0</b>
           </div>
         </fieldset>
 
@@ -618,6 +723,7 @@ table.list .nm{font-weight:500}
         <div class="segmented" role="group" aria-label="Jenis dokumen">
           <button type="button" id="segInvoice" aria-pressed="true" data-doc="invoice">Faktur A4</button>
           <button type="button" id="segNota" aria-pressed="false" data-doc="nota">Nota 80&nbsp;mm</button>
+          <button type="button" id="segBukti" aria-pressed="false" data-doc="bukti">Bukti bayar</button>
         </div>
         <button type="button" class="btn btn-sm" id="btnCetak" style="margin-left:auto">Cetak</button>
         <button type="button" class="btn btn-sm" id="btnUnduh" hidden>Unduh .html</button>
@@ -625,6 +731,7 @@ table.list .nm{font-weight:500}
       <div class="paper-stage">
         <article class="sheet sheet-invoice" id="sheetInvoice"></article>
         <article class="sheet sheet-nota" id="sheetNota" hidden></article>
+        <article class="sheet sheet-bukti" id="sheetBukti" hidden></article>
       </div>
     </div>
   </section>
@@ -678,6 +785,8 @@ table.list .nm{font-weight:500}
             <div class="field"><label for="tTelp">Telepon</label><input id="tTelp" type="tel" autocomplete="off"></div>
             <div class="field"><label for="tEmail">Email</label><input id="tEmail" type="email" autocomplete="off"></div>
             <div class="field"><label for="tNpwp">NPWP</label><input id="tNpwp" type="text" autocomplete="off"></div>
+            <div class="field"><label for="tOutletId">ID outlet</label><input id="tOutletId" type="text" autocomplete="off"></div>
+            <div class="field"><label for="tTagline">Tagline bukti bayar</label><input id="tTagline" type="text" autocomplete="off"></div>
           </div>
         </fieldset>
 
@@ -769,6 +878,22 @@ table.list .nm{font-weight:500}
     if(isNaN(d)) return "-";
     return String(d.getDate()).padStart(2,"0") + "/" + String(d.getMonth()+1).padStart(2,"0") + "/" + d.getFullYear();
   }
+  var BULAN_PENDEK = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+  function tglBukti(iso){
+    var d = new Date(iso + "T00:00:00");
+    if(isNaN(d)) return "-";
+    return String(d.getDate()).padStart(2,"0") + " " + BULAN_PENDEK[d.getMonth()] + " " + d.getFullYear();
+  }
+  function jamSekarang(){
+    var d = new Date(), p = function(x){ return String(x).padStart(2,"0"); };
+    return p(d.getHours()) + ":" + p(d.getMinutes()) + ":" + p(d.getSeconds());
+  }
+  function orderIdBaru(){
+    var d = new Date(), p = function(x){ return String(x).padStart(2,"0"); };
+    return "TRX" + String(d.getFullYear()).slice(2) + p(d.getMonth()+1) + p(d.getDate()) +
+      p(d.getHours()) + p(d.getMinutes()) + p(d.getSeconds()) +
+      String(Math.floor(Math.random()*10000)).padStart(4,"0");
+  }
   function jamCetak(){
     var d = new Date(), p = function(x){ return String(x).padStart(2,"0"); };
     return p(d.getDate()) + "/" + p(d.getMonth()+1) + "/" + d.getFullYear() + " " + p(d.getHours()) + ":" + p(d.getMinutes());
@@ -804,6 +929,8 @@ table.list .nm{font-weight:500}
     telp: "024 8451 220",
     email: "tagihan@sinarrejeki.id",
     npwp: "01.234.567.8-503.000",
+    outletId: "3201004602",
+    tagline: "Bukti Pembayaran",
     bank: "BCA",
     rek: "8720 114 556",
     an: "CV Sinar Rejeki Supply",
@@ -824,6 +951,13 @@ table.list .nm{font-weight:500}
       jatuhTempo: t,
       pelanggan: "", telp: "", alamat: "",
       kasir: "",
+      mode: "barang",
+      waktu: jamSekarang(),
+      digital: {
+        orderId: "", pelangganNo: "", serial: "",
+        jenis: "Paket Data", paket: "", status: "Sukses",
+        modal: 0, hargaAkhir: 0
+      },
       item: [{ d:"", qty:1, satuan:"pcs", harga:0, disk:0 }],
       diskon: 0, diskonTipe: "rp", ongkir: 0,
       ppnAktif: !!state.toko.ppnDefault, ppn: angka(state.toko.ppn),
@@ -858,7 +992,17 @@ table.list .nm{font-weight:500}
               {d:"Selang fleksibel 40 cm",qty:2,satuan:"pcs",harga:27500,disk:0}],
         diskon:0, diskonTipe:"rp", ongkir:0, ppnAktif:false, ppn:11,
         metode:"Tunai", dibayar:500000, catatan:"",
-        dibuatPada:new Date(Date.now()-864e5).toISOString() }
+        dibuatPada:new Date(Date.now()-864e5).toISOString() },
+      { id:"contoh-4", contoh:true, mode:"digital", nomor:"INV/2026/IX/0101", tanggal:t, termin:0,
+        jatuhTempo:t, pelanggan:"Pelanggan konter", telp:"0813 5747 4229", alamat:"", kasir:"Rina",
+        waktu:"10:17:35",
+        digital:{ orderId:"TRX2609151017354216", pelangganNo:"081357474229",
+          serial:"026240000012468388", jenis:"Paket Data",
+          paket:"UnlimitedMAX 35 GB (Ekstra Digistar)", status:"Sukses",
+          modal:73500, hargaAkhir:78000 },
+        item:[], diskon:0, diskonTipe:"rp", ongkir:0, ppnAktif:false, ppn:11,
+        metode:"Tunai", dibayar:78000, catatan:"",
+        dibuatPada:new Date(Date.now()-3600e3).toISOString() }
     ];
   }
 
@@ -901,6 +1045,16 @@ table.list .nm{font-weight:500}
 
   /* ---------------- perhitungan ---------------- */
   function hitung(t){
+    if(t.mode === "digital"){
+      var g = t.digital || {};
+      var jual = Math.round(angka(g.hargaAkhir));
+      var sukses = (g.status || "Sukses") === "Sukses";
+      return {
+        subtotal: jual, diskon: 0, dpp: jual, ppn: 0, total: jual,
+        modal: angka(g.modal), margin: jual - angka(g.modal),
+        dibayar: sukses ? jual : 0, sisa: 0, kembali: 0, batal: !sukses
+      };
+    }
     var subtotal = 0;
     (t.item || []).forEach(function(it){
       var bruto = angka(it.qty) * angka(it.harga);
@@ -927,6 +1081,13 @@ table.list .nm{font-weight:500}
     var tempo = key !== "lunas" && !isNaN(jt) && jt < new Date();
     c.key = key; c.label = tempo ? "Jatuh tempo" : label; c.tempo = tempo;
     c.pillClass = tempo ? "pill--tempo" : "pill--" + key;
+    if(t.mode === "digital"){
+      var st = (t.digital || {}).status || "Sukses";
+      c.tempo = false;
+      c.key = st === "Sukses" ? "lunas" : "belum";
+      c.label = st === "Sukses" ? "Sukses" : st;
+      c.pillClass = st === "Sukses" ? "pill--lunas" : (st === "Gagal" ? "pill--belum" : "pill--sebagian");
+    }
     return c;
   }
   function nomorBerikut(){
@@ -943,20 +1104,37 @@ table.list .nm{font-weight:500}
   }
 
   /* ---------------- form -> draft ---------------- */
+  function ambilNilai(t, jalur){
+    if(jalur.indexOf(".") < 0) return t[jalur];
+    var a = jalur.split(".");
+    return (t[a[0]] || {})[a[1]];
+  }
+  function taruhNilai(t, jalur, v){
+    if(jalur.indexOf(".") < 0){ t[jalur] = v; return; }
+    var a = jalur.split(".");
+    if(!t[a[0]]) t[a[0]] = {};
+    t[a[0]][a[1]] = v;
+  }
+
   var ikat = [
     ["fNomor","nomor","teks"], ["fTanggal","tanggal","teks"], ["fTermin","termin","angka"],
     ["fPelanggan","pelanggan","teks"], ["fTelp","telp","teks"], ["fAlamat","alamat","teks"],
     ["fDiskon","diskon","angka"], ["fDiskonTipe","diskonTipe","teks"], ["fOngkir","ongkir","angka"],
     ["fPpnAktif","ppnAktif","cek"], ["fPpn","ppn","angka"],
     ["fMetode","metode","teks"], ["fDibayar","dibayar","angka"],
-    ["fKasir","kasir","teks"], ["fCatatan","catatan","teks"]
+    ["fKasir","kasir","teks"], ["fCatatan","catatan","teks"],
+    ["dJenis","digital.jenis","teks"], ["dStatus","digital.status","teks"],
+    ["dPaket","digital.paket","teks"], ["dPelangganNo","digital.pelangganNo","teks"],
+    ["dSerial","digital.serial","teks"], ["dOrderId","digital.orderId","teks"],
+    ["dWaktu","waktu","teks"], ["dModal","digital.modal","angka"],
+    ["dHargaAkhir","digital.hargaAkhir","angka"]
   ];
   function isiForm(){
     var t = state.draft;
     ikat.forEach(function(b){
       var el = $(b[0]);
-      if(b[2] === "cek") el.checked = !!t[b[1]];
-      else el.value = t[b[1]];
+      if(b[2] === "cek") el.checked = !!ambilNilai(t, b[1]);
+      else el.value = ambilNilai(t, b[1]);
     });
     gambarBaris();
   }
@@ -964,7 +1142,7 @@ table.list .nm{font-weight:500}
     var t = state.draft;
     ikat.forEach(function(b){
       var el = $(b[0]);
-      t[b[1]] = b[2] === "cek" ? el.checked : (b[2] === "angka" ? angka(el.value) : el.value);
+      taruhNilai(t, b[1], b[2] === "cek" ? el.checked : (b[2] === "angka" ? angka(el.value) : el.value));
     });
     t.jatuhTempo = tambahHari(t.tanggal, t.termin);
   }
@@ -996,6 +1174,11 @@ table.list .nm{font-weight:500}
 
   /* ---------------- dokumen: faktur ---------------- */
   function barisTerpakai(t){
+    if(t.mode === "digital"){
+      var g = t.digital || {};
+      return [{ d: g.paket || g.jenis || "Transaksi digital", qty:1, satuan:"trx",
+                harga: angka(g.hargaAkhir), disk:0 }];
+    }
     var pakai = (t.item || []).filter(function(it){ return String(it.d).trim() || angka(it.harga) || angka(it.qty) > 1; });
     return pakai.length ? pakai : [{ d:"—", qty:0, satuan:"", harga:0, disk:0 }];
   }
@@ -1101,6 +1284,36 @@ table.list .nm{font-weight:500}
     "<div class='nota-foot'>" + esc(k.footerNota) + "\nSimpan nota ini sebagai bukti pembayaran yang sah.\nDicetak " + jamCetak() + "</div>";
   }
 
+  /* ---------------- dokumen: bukti bayar (produk digital) ---------------- */
+  function barisBukti(label, nilai){
+    return "<div class='bukti-row'><dt>" + esc(label) + "</dt><dd>" + esc(nilai || "-") + "</dd></div>";
+  }
+  function gambarBukti(t){
+    var k = state.toko, g = t.digital || {}, c = hitung(t);
+    var total = t.mode === "digital" ? angka(g.hargaAkhir) : c.total;
+    var outlet = (k.outletId ? k.outletId + " / " : "") + k.nama;
+
+    return "" +
+    "<div class='bukti-brand'><b>" + esc(k.nama) + "</b>" +
+      "<span>" + esc(k.tagline || "Bukti Pembayaran") + "</span></div>" +
+    "<dl class='bukti-list'>" +
+      barisBukti("Tanggal / Waktu", tglBukti(t.tanggal) + " / " + (t.waktu || "-")) +
+      barisBukti("ID Outlet / Nama Outlet", outlet) +
+      barisBukti("Order ID", g.orderId) +
+      barisBukti("No. Pelanggan", g.pelangganNo || t.telp) +
+      barisBukti("Serial Number", g.serial) +
+      barisBukti("Jenis Transaksi", g.jenis) +
+      barisBukti("Nama Paket", g.paket) +
+      barisBukti("Status", g.status || "Sukses") +
+    "</dl>" +
+    "<div class='bukti-rule'></div>" +
+    "<div class='bukti-total'><span>Total Bayar</span><span>" + rp(total) + "</span></div>" +
+    "<div class='bukti-foot'>" +
+      (t.kasir ? "Dilayani oleh " + esc(t.kasir) + "\n" : "") +
+      "Simpan bukti ini sebagai tanda pembayaran yang sah.\nDicetak " + jamCetak() +
+    "</div>";
+  }
+
   /* ---------------- riwayat ---------------- */
   function gambarRiwayat(){
     var rows = daftar().slice().sort(function(a,b){
@@ -1184,6 +1397,17 @@ table.list .nm{font-weight:500}
 
     $("sheetInvoice").innerHTML = gambarFaktur(t);
     $("sheetNota").innerHTML = gambarNota(t);
+    $("sheetBukti").innerHTML = gambarBukti(t);
+    $("sheetBukti").classList.toggle("bukti-gagal", (t.digital || {}).status === "Gagal");
+
+    var mi = $("marginInfo");
+    mi.hidden = t.mode !== "digital";
+    if(t.mode === "digital"){
+      var m = angka(t.digital.hargaAkhir) - angka(t.digital.modal);
+      mi.classList.toggle("rugi", m < 0);
+      mi.querySelector("span").textContent = m < 0 ? "Rugi transaksi ini" : "Margin transaksi ini";
+      mi.querySelector("b").textContent = rp(m);
+    }
     perbaruiJumlahBaris();
     gambarKpi();
     gambarRiwayat();
@@ -1193,8 +1417,22 @@ table.list .nm{font-weight:500}
     state.doc = doc;
     $("segInvoice").setAttribute("aria-pressed", String(doc === "invoice"));
     $("segNota").setAttribute("aria-pressed", String(doc === "nota"));
+    $("segBukti").setAttribute("aria-pressed", String(doc === "bukti"));
     $("sheetInvoice").classList.toggle("aktif", doc === "invoice");
     $("sheetNota").classList.toggle("aktif", doc === "nota");
+    $("sheetBukti").classList.toggle("aktif", doc === "bukti");
+
+    var digital = doc === "bukti";
+    state.draft.mode = digital ? "digital" : "barang";
+    $("fsDigital").hidden = !digital;
+    $("fsBarang").hidden = digital;
+    if(digital){
+      if(!state.draft.digital) state.draft.digital = trxBaru().digital;
+      if(!state.draft.digital.orderId) state.draft.digital.orderId = orderIdBaru();
+      if(!state.draft.waktu) state.draft.waktu = jamSekarang();
+    }
+    isiForm();
+    render();
   }
   function pilihTab(view){
     ["buat","riwayat","toko"].forEach(function(v){
@@ -1242,8 +1480,7 @@ table.list .nm{font-weight:500}
     state.draft = t;
     state.tersentuh = true;
     buangPetunjuk();
-    isiForm();
-    render();
+    pilihDok(t.mode === "digital" ? "bukti" : "invoice");
     pilihTab("buat");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -1260,21 +1497,22 @@ table.list .nm{font-weight:500}
   }
 
   function cetak(){
-    var nota = state.doc === "nota";
-    $("pageRule").textContent = nota
+    var nota = state.doc === "nota", bukti = state.doc === "bukti";
+    $("pageRule").textContent = (nota || bukti)
       ? "@media print{@page{size:80mm auto;margin:4mm}}"
       : "@media print{@page{size:A4;margin:14mm}}";
     document.body.classList.toggle("cetak-nota", nota);
-    document.body.classList.toggle("cetak-invoice", !nota);
+    document.body.classList.toggle("cetak-bukti", bukti);
+    document.body.classList.toggle("cetak-invoice", state.doc === "invoice");
     try { window.print(); }
     catch(e){ toast("Pencetakan diblokir di tampilan ini. Pakai tombol Unduh .html."); }
   }
 
   function dokumenLepas(){
-    var t = state.draft, nota = state.doc === "nota";
+    var t = state.draft, doc = state.doc;
     var gaya = Array.prototype.map.call(document.querySelectorAll("style"), function(s){ return s.textContent; }).join("\n");
-    var isi = nota ? gambarNota(t) : gambarFaktur(t);
-    var kelas = nota ? "sheet sheet-nota aktif" : "sheet sheet-invoice aktif";
+    var isi = doc === "nota" ? gambarNota(t) : doc === "bukti" ? gambarBukti(t) : gambarFaktur(t);
+    var kelas = "sheet aktif " + (doc === "nota" ? "sheet-nota" : doc === "bukti" ? "sheet-bukti" : "sheet-invoice");
     return "<!DOCTYPE html><html lang='id'><head><meta charset='utf-8'>" +
       "<title>" + esc(t.nomor || nomorBerikut()) + "</title>" +
       "<link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap'>" +
@@ -1295,6 +1533,7 @@ table.list .nm{font-weight:500}
     });
     $("segInvoice").addEventListener("click", function(){ pilihDok("invoice"); });
     $("segNota").addEventListener("click", function(){ pilihDok("nota"); });
+    $("segBukti").addEventListener("click", function(){ pilihDok("bukti"); });
 
     ikat.forEach(function(b){
       $(b[0]).addEventListener("input", function(){
@@ -1345,7 +1584,7 @@ table.list .nm{font-weight:500}
       state.draft = trxBaru();
       state.draft.nomor = nomorBerikut();
       state.draft.kasir = (state.riwayat[0] || {}).kasir || "";
-      isiForm(); render(); pilihTab("buat");
+      pilihDok(state.doc); pilihTab("buat");
       toast("Transaksi baru disiapkan.");
     });
     $("btnCetak").addEventListener("click", cetak);
@@ -1372,7 +1611,8 @@ table.list .nm{font-weight:500}
     });
 
     var tokoIkat = [["tNama","nama"],["tInisial","inisial"],["tAlamat","alamat"],["tTelp","telp"],
-      ["tEmail","email"],["tNpwp","npwp"],["tBank","bank"],["tRek","rek"],["tAn","an"],
+      ["tEmail","email"],["tNpwp","npwp"],["tOutletId","outletId"],["tTagline","tagline"],
+      ["tBank","bank"],["tRek","rek"],["tAn","an"],
       ["tPrefix","prefix"],["tPpn","ppn"],["tPpnDefault","ppnDefault"],["tSyarat","syarat"],["tFooterNota","footerNota"]];
     function isiToko(){
       tokoIkat.forEach(function(b){
@@ -1436,8 +1676,8 @@ table.list .nm{font-weight:500}
       $("btnUnduh").hidden = false;
       $("btnCadangan").hidden = false;
       $("btnUnduh").addEventListener("click", function(){
-        var nama = (state.draft.nomor || nomorBerikut()).replace(/\//g, "-") +
-          (state.doc === "nota" ? "-nota" : "-faktur") + ".html";
+        var akhiran = state.doc === "nota" ? "-nota" : state.doc === "bukti" ? "-bukti-bayar" : "-faktur";
+        var nama = (state.draft.nomor || nomorBerikut()).replace(/\//g, "-") + akhiran + ".html";
         unduhan.save({ filename: nama, data: dokumenLepas() }).catch(function(){});
       });
       $("btnCadangan").addEventListener("click", function(){
@@ -1478,6 +1718,16 @@ table.list .nm{font-weight:500}
       state.draft.metode = "Transfer Bank";
       state.draft.dibayar = 1500000;
       state.draft.catatan = "Kirim ke gudang belakang.";
+      state.draft.digital = {
+        orderId: orderIdBaru(),
+        pelangganNo: "0813 5747 4229",
+        serial: "026240000012468388",
+        jenis: "Paket Data",
+        paket: "UnlimitedMAX 35 GB (Ekstra Digistar)",
+        status: "Sukses",
+        modal: 73500,
+        hargaAkhir: 78000
+      };
       var hint = document.createElement("p");
       hint.className = "hint";
       hint.id = "draftHint";
@@ -1489,8 +1739,8 @@ table.list .nm{font-weight:500}
     pasang();
     isiForm();
     $("sheetNota").hidden = false;
+    $("sheetBukti").hidden = false;
     pilihDok("invoice");
-    render();
     tandaiSync("local", "Tersimpan di perangkat ini");
     sambungkan();
   }
